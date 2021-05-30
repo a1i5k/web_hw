@@ -1,0 +1,15 @@
+{% load static %}
+{% include "include/base.html" %}
+<div class="content">
+
+{% block header %}
+{% endblock header %}
+    {% block content %}
+        {% for q in questions %}
+            {% include "include/question.html" %}
+        {% endfor %}
+    {% endblock content %}
+    {% include "include/scripts.html" %}
+    {% include "include/paginator.html" %}
+</div>
+</html>

@@ -1,0 +1,284 @@
+.topnav {
+  overflow: hidden;
+  background-color: #000000;
+  height: 60px;
+}
+
+.topnav-buttons {
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 11px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav-buttons-login {
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 0px 15px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav input[type=text] {
+  margin-left: 20px;
+  padding: 10px;
+  border: none;
+  font-size: 17px;
+  height: 40px;
+  border-radius: 20px;
+  width: 80%;
+}
+
+.topnav img {
+  float: left;
+  width: 200px;
+  height: 100%;
+}
+
+.searchbar {
+  display: inline-block;
+  height: 100%;
+  width: 50%;
+  margin: 10px;
+}
+
+.search {
+  background-color: #00ff00;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.username {
+  color: #00ff00;
+  margin-left: 13px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.login {
+  float: right;
+  margin-right: 10px;
+  width: 240px;
+  padding-top: 5px;
+}
+
+.login img {
+  width: 50px;
+  height: 50px;
+}
+
+.signup {
+  color: white;
+  margin-left: 40px;
+  text-decoration: none;
+}
+
+.content {
+  margin-left: 7px;
+  background-color: #1c1c21;
+  width: 90%;
+}
+
+aside {
+    color: white;
+    text-align: left;
+    float: right;
+    padding-top: 5vh;
+    padding-right: 20px;
+}
+
+.tags {
+  color: white;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+
+.title {
+  vertical-align: middle;
+  margin-left: 50px;
+  font-family: 'Courier New', monospace;
+  font-size: 200%;
+  user-select: none;
+  color: #ff6633;
+  text-decoration: none;
+}
+
+.background-body {
+  background-color: #1c1c21;
+}
+
+.paginator-background {
+  background-color: #1c1c21;
+  border: #1c1c21;
+}
+
+.selected-paginator-background {
+  background-color: #303033;
+  border: #1c1c21;
+}
+
+.head-name {
+  color: #0d6efd;
+}
+
+.clickable {
+  color: #0d6efd;
+  cursor: pointer;
+  border-style: none;
+}
+
+.page-header {
+  display: inline-block;
+  color: white;
+  margin: 20px 0px 0px 40px;
+}
+
+.new-questions {
+  text-decoration: none;
+  font-size: 20px;
+  display: inline-block;
+}
+
+.hot-questions {
+  text-decoration: none;
+  font-size: 20px;
+  padding-left: 20px;
+  display: inline-block;
+  float: right;
+}
+
+.selected-questions {
+  font-size: 27px;
+}
+
+.questions-header {
+  text-decoration: none;
+  color: white;
+  margin: 20px;
+  padding: 15px;
+  text-decoration: none;
+}
+
+.question-preview {
+  text-decoration: none;
+  background-color: #303033;
+  color: white;
+  margin: 40px;
+  padding-bottom: 10px;
+  border-color: red;
+  border-radius: 1rem;
+  border-width: 2px;
+}
+
+.question-preview img {
+  width: 80px;
+  height: 80px;
+}
+
+.question-preview-content {
+  text-decoration: none;
+  margin-left: 120px;
+  margin-top: -130px;
+  margin-bottom: 10px;
+  margin-right: 15px;
+}
+
+.like-block {
+  color: white;
+  margin-bottom: 23px;
+  margin-left: 8px;
+  font-size: 20px;
+}
+
+.rating {
+  color: white;
+  user-select: none;
+}
+.like {
+  color: green;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dislike {
+  color: red;
+  cursor: pointer;
+  user-select: none;
+}
+
+.bottom-content {
+  margin-top: 20px;
+}
+
+.question-tags {
+  margin-left: 10px;
+}
+
+footer {
+  margin: 40px;
+  margin-bottom: 10px;
+  bottom: 10px;
+}
+
+.date {
+  color: white;
+  float: right;
+}
+
+.answer {
+  color: white;
+  margin-top: -130px;
+}
+
+.write-answer {
+  color: white;
+  margin-left: 40px;
+  margin-top: 20px;
+  width: 75%;
+}
+
+.write-answer button {
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.input-form {
+  color: white;
+  margin: 40px;
+  width: 40%;
+}
+
+.error {
+  margin-left: 40px;
+  margin-top: 10px;
+  color: red;
+}
+
+.input-form div {
+  margin-top: 20px;
+}
+
+.input-form label {
+  margin-bottom: 2px;
+}
+
+.form-group img {
+  width: 100px;
+  margin-left: 50px;
+  margin-top: 80px;
+}
+
+.file input {
+  margin: 20px 0 0 160px;
+  width: 40%;
+}
+
+.huge {
+  color: blue;
+  font-size: 20px;
+}

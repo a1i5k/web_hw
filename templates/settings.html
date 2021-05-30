@@ -1,0 +1,29 @@
+{% include "include/base.html" %}
+{% load static %}
+<div class="content">
+    <span class="page-header huge">Settings: Dr.Pepper</span>
+    <form class="input-form">
+        <div class="form-group">
+            <label for="title_area">Login</label>
+            <input type="text" class="form-control" id="title_area" placeholder="dr_pepper">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="dr.pepper@mail.ru"/>
+        </div>
+        <div class="form-group">
+            <label for="tags">Nickname</label>
+            <input type="text" class="form-control" id="tags" placeholder="Dr.Pepper">
+        </div>
+        <br/>
+        <div class="form-group file">
+            <label for="ava">Upload avatar</label>
+            <img id="ava" src="{% static "img/ava.jpg" %}">
+            <input type="file" class="form-control" id="customFile" />
+        </div>
+        <button class="btn btn-success">Save</button>
+    </form>
+</div>
+{% include "include/scripts.html" %}
+</body>
+</html>

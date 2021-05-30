@@ -1,0 +1,7 @@
+venv/
+.git
+node_modules/
+*.pyc
+.idea/
+__pycache__/
+*.sqlite3

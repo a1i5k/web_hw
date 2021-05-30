@@ -1,0 +1,48 @@
+{% include "include/base.html" %}
+{% load static %}
+<div class="content">
+    <div class="card w-75 question-preview">
+        <div class="card-body">
+            <div class="username">{{ q.author }}</div>
+            <img src="{% static "img/ava.jpg" %}">
+            <div class="like-block">
+                <span class="likes">{{ q.rating}}</span>
+                <span class="like">+</span>
+                <span class="dislike">-</span>
+            </div>
+            <div class="question-preview-content">
+                <h5 class="card-title">
+                    {{ q.title }}
+                </h5>
+                <p class="card-text">{{ q.text }}</p>
+                <div class="bottom-content">
+                    <span>answers({{ answers_count }})</span>
+                    <span class="question-tags">Tags:</span>
+                    {% for tag in q.tag.all %}
+                    {% if forloop.last %}
+                        <a class="clickable" href="{% url 'tag' pk=tag %}">{{ tag.text }}</a>
+                    {% else %}
+                        <a class="clickable" href="{% url 'tag' pk=tag %}">{{ tag.text }},</a>
+                    {% endif %}
+                    {% endfor %}
+                    <span class="date">{{ q.date }}</span>
+                </div>
+            </div>
+        </div>
+        {% for answer in answers %}
+            {%  include "include/answer.html" %}
+        {% endfor %}
+        {% with questions=answers %}
+            {%  include "include/paginator.html" %}
+        {% endwith %}
+        <div class="form-group write-answer">
+            <label>Answer</label>
+            <textarea class="form-control" rows="5"></textarea>
+            <button class="btn btn-success">Answer!</button>
+        </div>
+
+    </div>
+    {% include "include/scripts.html" %}
+    </body>
+</div>
+</html>

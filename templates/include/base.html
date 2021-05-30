@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    <title>GitOverFlow</title>
+</head>
+
+<body class="background-body">
+{% block topnav %}
+    <div class="topnav">
+        <a class="title" href="{% url 'new' %}">GitOverFlow</a>
+        <span class="searchbar">
+      <input type="text" placeholder="Search...">
+      <button type="button" class="btn btn-success search">ASK!</button>
+    </span>
+        <div class="login">
+            <img src="{% static "img/ava.jpg" %}">
+            {% if request.user.is_authenticated %}
+                <span id="logged-in">
+                    <span class="username">Nickname</span><br/>
+                    <a href="{% url 'settings' %}" class="topnav-buttons-login">Settings</a>
+                    <a href="{% url 'login' %}" class="topnav-buttons-login">Log out</a>
+                </span>
+            {% else %}
+            <span id="guest">
+                <a id="login" class="topnav-buttons" href="{% url 'login' %}">Login</a>
+                <a id="signup" class="topnav-buttons" href="{% url 'signup' %}">Sign up</a>
+            </span>
+            {% endif %}
+        </div>
+    </div>
+{% endblock topnav %}
+
+{% block side %}
+    <aside>
+        <span class="head-name">Popular Tags</span>
+        <table class="table-striped tags">
+            <tr>
+                {% for tag in top_tags %}
+                    <td>
+                        <a class="tags" href="{% url 'tag' pk=tag %}">{{ tag }}</a>
+                    </td>
+                    {% if forloop.counter|divisibleby:"3" %}
+                        </tr>
+                        <tr>
+                    {% endif %}
+                {% endfor %}
+        </table>
+        <span class="head-name">Best Members</span>
+        <table class="table-striped users">
+            {% for user in top_users %}
+                <tr>
+                    <td>{{ user.user }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </aside>
+{% endblock side %}

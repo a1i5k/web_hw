@@ -1,0 +1,7 @@
+{% extends "include/index.html" %}
+{% block header %}
+    <div class="page-header col-9">
+        <a class="selected-questions new-questions clickable" href="{% url 'new' %}">New Questions</a>
+        <a class="hot-questions clickable" href="{% url 'hot' %}">Hot Questions</a>
+    </div>
+{% endblock header %}
