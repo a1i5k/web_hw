@@ -1,4 +1,5 @@
-{% include "include/base.html" %}
+{% extends "include/base.html" %}
+{% block content %}
 {% load static %}
 <div class="content">
     <span class="page-header huge">Log In</span>
@@ -18,5 +19,4 @@
     <a href="{% url 'signup' %}" class="signup">Create new account</a>
 </div>
 {% include "include/scripts.html" %}
-</body>
-</html>
+{% endblock %}
