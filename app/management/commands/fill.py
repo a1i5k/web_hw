@@ -19,9 +19,11 @@ class Command(BaseCommand):
             Tag.objects.bulk_create(tags)
 
         for i in range(10001):
-            User.objects.create(username=Faker().simple_profile()['username'] + Faker().pystr()[:10],
-                                email=Faker().email(),
-                                password=Faker().name())
+            user = User.objects.create(username=Faker().simple_profile()['username'] + Faker().pystr()[:10],
+                                       email=Faker().email(),
+                                       password=Faker().name())
+            user.profile.nickname = Faker().simple_profile()['username'] + Faker().pystr()[:10]
+            user.save()
             print(i)
 
         for i in range(100001):
@@ -49,9 +51,9 @@ class Command(BaseCommand):
             print(i)
 
         for i in range(100000):
-            obj = Question.objects.get(pk=randint(2, 10000))
+            obj = Question.objects.get(pk=randint(User.objects.first().id, User.objects.last().id))
             Like.objects.create(
-                user=User.objects.get(pk=randint(2, 10000)),
+                user=User.objects.get(pk=randint(User.objects.first().id, User.objects.last().id)),
                 content_type=ContentType.objects.get_for_model(obj),
                 rating=1,
                 object_id=obj.id
@@ -59,9 +61,9 @@ class Command(BaseCommand):
             print(i)
 
         for i in range(100000):
-            obj = Answer.objects.get(pk=randint(2, 10000))
+            obj = Answer.objects.get(pk=randint(User.objects.first().id, User.objects.last().id))
             Like.objects.create(
-                user=User.objects.get(pk=randint(2, 10000)),
+                user=User.objects.get(pk=randint(User.objects.first().id, User.objects.last().id)),
                 content_type=ContentType.objects.get_for_model(obj),
                 rating=1,
                 object_id=obj.id

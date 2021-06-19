@@ -4,10 +4,10 @@
         <div class="username">{{ answer.author.profile.nickname }}</div>
         <img src="{{ answer.author.profile.avatar.url }}">
         <div class="like-block">
-            <span class="rating" id="{{ answer.pk }}">{{ answer.rating }}</span>
+            <span class="rating" id="answer{{ answer.pk }}">{{ answer.rating }}</span>
             {% if request.user.is_authenticated %}
-                <span class="js-answer like" id="like{{ answer.pk }}" data-action="like" data-aid="{{ answer.pk }}">+</span>
-                <span class="js-answer dislike" id="dislike{{ answer.pk }}" data-action="dislike" data-aid="{{ answer.pk }}">-</span>
+                <span class="js-answer like" id="answer_like{{ answer.pk }}" data-action="like" data-aid="{{ answer.pk }}">+</span>
+                <span class="js-answer dislike" id="answer_dislike{{ answer.pk }}" data-action="dislike" data-aid="{{ answer.pk }}">-</span>
             {% endif %}
         </div>
         <div class="question-preview-content answer">

@@ -10,13 +10,13 @@ $('.js-answer').click(function(ev) {
             aid: aid
         }
     }).done(function(data) {
-        $("#" + aid).html("").append(data['rating']);
+        $("#answer" + aid).html("").append(data['rating']);
         if (action === 'like') {
-            $("#like" + aid).prop('hidden', true);
-            $("#dislike" + aid).prop('hidden', false);
+            $("#answer_like" + aid).prop('hidden', true);
+            $("#answer_dislike" + aid).prop('hidden', false);
         } else {
-            $("#dislike" + aid).prop('hidden', true);
-            $("#like" + aid).prop('hidden', false);
+            $("#answer_dislike" + aid).prop('hidden', true);
+            $("#answer_like" + aid).prop('hidden', false);
         }
     });
 });
