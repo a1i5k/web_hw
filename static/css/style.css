@@ -189,22 +189,25 @@ aside {
 
 .like-block {
   color: white;
-  margin-bottom: 23px;
+  margin-bottom: 37px;
   margin-left: 8px;
   font-size: 20px;
 }
 
 .rating {
+  text-decoration: none;
   color: white;
   user-select: none;
 }
 .like {
+  text-decoration: none;
   color: green;
   cursor: pointer;
   user-select: none;
 }
 
 .dislike {
+  text-decoration: none;
   color: red;
   cursor: pointer;
   user-select: none;
@@ -251,6 +254,11 @@ footer {
   color: white;
   margin: 40px;
   width: 40%;
+}
+
+.input-text {
+  color: white;
+  width: 240%;
 }
 
 .error {

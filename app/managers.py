@@ -38,4 +38,5 @@ class ProfileManager(models.Manager):
 
 
 class LikeManager(models.Manager):
-    pass
+    def get_like_by_content(self, content, content_id, user):
+        return self.filter(object_id=content_id, content_type=content, user=user).first()

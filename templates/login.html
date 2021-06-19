@@ -1,20 +1,25 @@
 {% extends "include/base.html" %}
 {% block content %}
 {% load static %}
+{% load bootstrap4 %}
 <div class="content">
     <span class="page-header huge">Log In</span>
-    <div class="error">Sorry, wrong email or password!</div>
-    <form class="input-form">
-        <div class="form-group">
-            <label for="title_area">Login</label>
-            <input type="text" class="form-control" id="title_area" placeholder="Enter your login">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="********"/>
-        </div>
-        <br/>
+    <div class="error">{{ error }}</div>
+    <form novalidate class="input-form" action="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+<!--        <div class="form-group">-->
+<!--            <label for="title_area">Login</label>-->
+<!--            <input type="text" name="login" class="form-control" id="title_area" placeholder="Enter your login">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="password">Password</label>-->
+<!--            <input type="password" name="password" class="form-control" id="password" placeholder="********"/>-->
+<!--        </div>-->
+<!--        <br/>-->
+    {% buttons %}
         <button class="btn btn-success">Log in</button>
+    {% endbuttons %}
     </form>
     <a href="{% url 'signup' %}" class="signup">Create new account</a>
 </div>

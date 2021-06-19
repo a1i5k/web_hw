@@ -30,8 +30,7 @@ class Command(BaseCommand):
                 title=Faker().paragraph(nb_sentences=1),
                 text=Faker().text,
                 date=Faker().date,
-                rating=randint(-100, 100),
-                tag=Tag.objects.get(pk=randint(Tag.objects.first().id, Tag.objects.last().id))
+                rating=randint(-100, 100)
             )
             tags = []
             for j in range(5):

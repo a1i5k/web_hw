@@ -1,12 +1,14 @@
 {% load static %}
 <div class="card w-75 question-preview">
     <div class="card-body">
-        <div class="username">{{ q.author }}</div>
-        <img src="{% static "img/ava.jpg" %}">
+        <div class="username">{{ q.author.profile.nickname }}</div>
+        <img src="{{ q.author.profile.avatar.url }}">
         <div class="like-block">
-            <span class="rating">{{ q.rating }}</span>
-            <span class="like">+</span>
-            <span class="dislike">-</span>
+            <span class="rating" id="{{ q.pk }}">{{ q.rating}}</span>
+            {% if request.user.is_authenticated %}
+                <span class="js-vote like" id="like{{ q.pk }}" data-action="like" data-qid="{{ q.pk }}">+</span>
+                <span class="js-vote dislike" id="dislike{{ q.pk }}" data-action="dislike" data-qid="{{ q.pk }}">-</span>
+            {% endif %}
         </div>
         <div class="question-preview-content">
             <h5 class="card-title">

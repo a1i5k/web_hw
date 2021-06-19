@@ -1,32 +1,20 @@
 {% extends "include/base.html" %}
 {% block content %}
 {% load static %}
+{% load bootstrap4 %}
 <div class="content">
     <span class="page-header huge">Registration</span>
-    <div class="error">Sorry, this email is already registered!</div>
-    <form class="input-form">
-        <div class="form-group">
-            <label for="title_area">Login</label>
-            <input type="text" class="form-control" id="title_area" placeholder="dr_pepper">
-        </div>
-        <div class="form-group">
-            <label for="email">Password</label>
-            <input type="email" class="form-control" id="email" placeholder="dr.pepper@mail.ru"/>
-        </div>
-        <div class="form-group">
-            <label for="nickname">NickName</label>
-            <input type="text" class="form-control" id="nickname" placeholder="dr_pepper">
-        </div>
-        <div class="form-group">
-            <label for="pass">Password</label>
-            <input type="password" class="form-control" id="pass" placeholder="********">
-        </div>
-        <div class="form-group">
-            <label for="pass2">Repeat password</label>
-            <input type="password" class="form-control" id="pass2" placeholder="********">
-        </div>
-        <br/>
+    {% for err in error %}
+        <div class="error">{{ err }}</div>
+    {% endfor %}
+
+    <form class="input-form" action="/signup/" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+
+            {% buttons %}
         <button class="btn btn-success">Register</button>
+            {% endbuttons %}
     </form>
 </div>
 {% include "include/scripts.html" %}

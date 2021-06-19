@@ -1,15 +1,18 @@
 {% extends 'include/base.html' %}
 {% block content %}
 {% load static %}
+{% load bootstrap4 %}
 <div class="content">
     <div class="card w-75 question-preview">
         <div class="card-body">
-            <div class="username">{{ q.author }}</div>
-            <img src="{% static "img/ava.jpg" %}">
+            <div class="username">{{ q.author.profile.nickname }}</div>
+            <img src="{{ q.author.profile.avatar.url }}">
             <div class="like-block">
-                <span class="likes">{{ q.rating}}</span>
-                <span class="like">+</span>
-                <span class="dislike">-</span>
+                <span class="rating" id="{{ q.pk }}">{{ q.rating}}</span>
+                {% if request.user.is_authenticated %}
+                    <span class="js-vote like" id="like{{ q.pk }}" data-action="like" data-qid="{{ q.pk }}">+</span>
+                    <span class="js-vote dislike" id="dislike{{ q.pk }}" data-action="dislike" data-qid="{{ q.pk }}">-</span>
+                {% endif %}
             </div>
             <div class="question-preview-content">
                 <h5 class="card-title">
@@ -33,16 +36,27 @@
         {% for answer in answers %}
             {%  include "include/answer.html" %}
         {% endfor %}
+
+        {% block jscode %}
+                <script src="{% static "js/vote.js" %}"></script>
+        {% endblock jscode %}
         {% with questions=answers %}
             {%  include "include/paginator.html" %}
         {% endwith %}
+
+        {% if request.user.is_authenticated %}
         <div class="form-group write-answer">
+            <form novalidate class="input-form" action="" method="post">
+            {% csrf_token %}
             <label>Answer</label>
-            <textarea class="form-control" rows="5"></textarea>
+            {{ form.body }}
+            {% buttons %}
             <button class="btn btn-success">Answer!</button>
+            {% endbuttons %}
+            </form>
         </div>
+        {% endif %}
 
     </div>
-    {% include "include/scripts.html" %}
 </div>
 {% endblock %}

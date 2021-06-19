@@ -18,12 +18,12 @@
       <button type="button" class="btn btn-success search">ASK!</button>
     </span>
         <div class="login">
-            <img src="{% static "img/ava.jpg" %}">
             {% if request.user.is_authenticated %}
+                <img src="{{ request.user.profile.avatar.url }}">
                 <span id="logged-in">
-                    <span class="username">Nickname</span><br/>
-                    <a href="{% url 'settings' %}" class="topnav-buttons-login">Settings</a>
-                    <a href="{% url 'login' %}" class="topnav-buttons-login">Log out</a>
+                    <span class="username">{{ user.profile.nickname }}</span><br/>
+                    <a href="{% url 'settings' pk=user.profile.nickname %}" class="topnav-buttons-login">Settings</a>
+                    <a href="{% url 'logout' %}?next={{ request.path }}" class="topnav-buttons-login">Log out</a>
                 </span>
             {% else %}
             <span id="guest">
@@ -59,7 +59,16 @@
             {% endfor %}
         </table>
     </aside>
+
+    <script src="{% static "js/jquery-3.5.1.min.js" %}"></script>
+    <script src="{% static "js/csrf.js" %}"></script>
+    <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/main.js" %}"></script>
+    {% block jscode %}{%endblock%}
+
 {% endblock side %}
 {% block content %}
 {% endblock %}
 </body>
+</html>

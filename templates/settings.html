@@ -1,28 +1,18 @@
 {% extends "include/base.html" %}
 {% block content %}
 {% load static %}
+{% load bootstrap4 %}
 <div class="content">
-    <span class="page-header huge">Settings: Dr.Pepper</span>
-    <form class="input-form">
-        <div class="form-group">
-            <label for="title_area">Login</label>
-            <input type="text" class="form-control" id="title_area" placeholder="dr_pepper">
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="dr.pepper@mail.ru"/>
-        </div>
-        <div class="form-group">
-            <label for="tags">Nickname</label>
-            <input type="text" class="form-control" id="tags" placeholder="Dr.Pepper">
-        </div>
-        <br/>
-        <div class="form-group file">
-            <label for="ava">Upload avatar</label>
-            <img id="ava" src="{% static "img/ava.jpg" %}">
-            <input type="file" class="form-control" id="customFile" />
-        </div>
+    <span class="page-header huge">Settings: {{ login }}</span>
+    {% for err in error %}
+        <div class="error">{{ err }}</div>
+    {% endfor %}
+    <form novalidate class="input-form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
         <button class="btn btn-success">Save</button>
+            {% endbuttons %}
     </form>
 </div>
 {% include "include/scripts.html" %}

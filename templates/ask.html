@@ -1,24 +1,29 @@
 {% extends "include/base.html" %}
 {% block content %}
 {% load static %}
+{% load bootstrap4 %}
 <div class="content">
-    <form class="input-form">
-        <div class="form-group">
-            <label for="title_area">Title</label>
-            <input type="text" class="form-control" id="title_area" placeholder="How to build a moon park?">
-        </div>
-        <div class="form-group">
-            <label for="text_area">Text</label>
-            <textarea class="form-control" id="text_area" rows="5" placeholder="Really, how? Have no idea about it"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="tags">Tags</label>
-            <input type="text" class="form-control" id="tags" placeholder="moon, park, puzzle">
-        </div>
-        <br/>
-        <div class="form-group">
+    <form novalidate class="input-form" action="/ask/" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+<!--        <div class="form-group">-->
+<!--            <label for="title_area">Title</label>-->
+<!--            <input type="text" class="form-control" id="title_area" placeholder="How to build a moon park?">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="text_area">Text</label>-->
+<!--            <textarea class="form-control" id="text_area" rows="5" placeholder="Really, how? Have no idea about it"></textarea>-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--            <label for="tags">Tags</label>-->
+<!--            <input type="text" class="form-control" id="tags" placeholder="moon, park, puzzle">-->
+<!--        </div>-->
+<!--        <br/>-->
+<!--        <div class="form-group">-->
+            {% buttons %}
             <button class="btn btn-success" type="submit">ASK!</button>
-        </div>
+            {% endbuttons %}
+<!--        </div>-->
     </form>
 </div>
 {% include "include/scripts.html" %}

@@ -8,8 +8,9 @@
         {% for q in questions %}
             {% include "include/question.html" %}
         {% endfor %}
+        {% block jscode %}
+                <script src="{% static "js/vote.js" %}"> </script>
+        {% endblock jscode %}
     {% endblock content %}
-    {% include "include/scripts.html" %}
     {% include "include/paginator.html" %}
 </div>
-</html>

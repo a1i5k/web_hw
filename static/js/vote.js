@@ -1,0 +1,63 @@
+$('.js-answer').click(function(ev) {
+    ev.preventDefault();
+    var $this = $(this),
+        action = $this.data('action'),
+        aid = $this.data('aid');
+    $.ajax('/vote_answer/', {
+        method: 'POST',
+        data: {
+            action: action,
+            aid: aid
+        }
+    }).done(function(data) {
+        $("#" + aid).html("").append(data['rating']);
+        if (action === 'like') {
+            $("#like" + aid).prop('hidden', true);
+            $("#dislike" + aid).prop('hidden', false);
+        } else {
+            $("#dislike" + aid).prop('hidden', true);
+            $("#like" + aid).prop('hidden', false);
+        }
+    });
+});
+
+$('.js-vote').click(function(ev) {
+    ev.preventDefault();
+    var $this = $(this),
+        action = $this.data('action'),
+        qid = $this.data('qid');
+    $.ajax('/vote/', {
+        method: 'POST',
+        data: {
+            action: action,
+            qid: qid
+        }
+    }).done(function(data) {
+        $("#" + qid).html("").append(data['rating']);
+        if (action === 'like') {
+            $("#like" + qid).prop('hidden', true);
+            $("#dislike" + qid).prop('hidden', false);
+        } else {
+            $("#dislike" + qid).prop('hidden', true);
+            $("#like" + qid).prop('hidden', false);
+        }
+    });
+});
+
+$('.js-current').click(function(ev) {
+    ev.preventDefault();
+    var $this = $(this),
+        aid = $this.data('aid'),
+        qid = $this.data('qid');
+    $.ajax('/vote_current/', {
+        method: 'POST',
+        data: {
+            aid: aid,
+            qid: qid
+        }
+    }).done(function(data) {
+        $("#correct" + aid).prop('checked', data['correct']);
+        $("#correct" + data['incorrect']).prop('checked', false);
+        console.log("RESPONSE: ", data)
+    });
+});

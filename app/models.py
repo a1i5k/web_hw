@@ -11,7 +11,7 @@ from app.managers import *
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=CASCADE)
     nickname = models.CharField(max_length=16)
-    avatar = models.ImageField(default="static/img/ava.jpg")
+    avatar = models.ImageField(upload_to="avatar/%Y/%m/%d", default="ava.jpg")
     rating = models.IntegerField(default=0)
     objects = ProfileManager()
 
@@ -33,6 +33,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Tag(models.Model):
     text = models.CharField(max_length=16)
+    rating = models.IntegerField(default=0)
     objects = TagManager()
 
     def __str__(self):
@@ -44,7 +45,8 @@ class Tag(models.Model):
 
 
 class Like(models.Model):
-    GRADE = [(1, 'like'), (-1, 'dislike')]
+    GRADE = ((1, 'like'), (-1, 'dislike'))
+    ACTION = {x[1]: x[0] for x in GRADE}
 
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     rating = models.IntegerField(choices=GRADE)
@@ -83,6 +85,7 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, null=False, on_delete=CASCADE, related_name='answers')
     vote = GenericRelation(Like, related_query_name='questions')
     rating = models.IntegerField(default=0, null=False)
+    correct = models.BooleanField(default=False)
     objects = AnswerManager()
 
     def __str__(self):

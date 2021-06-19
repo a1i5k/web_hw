@@ -1,7 +1,25 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.http import Http404
-from django.shortcuts import render
-from .models import Question, Tag, Answer
+from django.db.models import F
+from django.forms.utils import ErrorList
+from django.http import Http404, JsonResponse
+from django.shortcuts import render, redirect
+from django.contrib import auth
+from django.urls import reverse
+from django.views.decorators.http import require_POST
+
+from .models import *
+from app.forms import *
+
+
+class DivErrorList(ErrorList):
+    def __str__(self):
+        return self.as_divs()
+
+    def as_divs(self):
+        if not self:
+            return ''
+        return '%s' % ''.join(['<div class="error">%s</div>' % e for e in self])
 
 
 def paginate(objects, request, per_page=5):
@@ -26,12 +44,47 @@ def index(request):
                   )
 
 
+@login_required
 def ask(request):
-    return render(request, 'ask.html', {})
+    if request.method == 'POST':
+        form = QuestionForm(data=request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.author = request.user
+            question.save()
+            tags = form.clean()['tag']
+            question.tag.set(tags)
+            return redirect(reverse('question', kwargs={"pk": question.pk}))
+    else:
+        form = QuestionForm()
+    return render(request, 'ask.html', {"form": form})
 
 
 def login(request):
-    return render(request, 'login.html', {})
+    error = ''
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                auth.login(request, user)
+                url = request.GET.get('next', '/')
+                return redirect(url)
+            else:
+                error = 'Sorry, wrong login or password!'
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {
+        'error': error,
+        'form': form
+    }
+                  )
+
+
+def logout(request):
+    auth.logout(request)
+    url = request.GET.get('next', '/')
+    return redirect(url)
 
 
 def question(request):
@@ -39,11 +92,64 @@ def question(request):
 
 
 def register(request):
-    return render(request, 'register.html', {})
+    error = []
+    if request.method == 'POST':
+        form = RegisterForm(data=request.POST, auto_id=False, error_class=DivErrorList)
+        if form.is_valid():
+            new_user = form.save(commit=False)
+            new_user.username = form.cleaned_data['login']
+            new_user.email = form.cleaned_data['email']
+            new_user.save()
+            new_user.set_password(form.cleaned_data['password'])
+            new_user.save()
+            new_user.profile.nickname = form.cleaned_data['nickname']
+            auth.login(request, new_user)
+            return redirect(reverse('new'))
+        else:
+            for err in form.errors['__all__']:
+                error.append(err)
+
+    else:
+        form = RegisterForm()
+
+    return render(request, 'register.html', {
+        'error': error,
+        'form': form
+    }
+                  )
 
 
-def settings(request):
-    return render(request, 'settings.html', {})
+@login_required
+def settings(request, pk):
+    error = []
+    if request.method == 'POST':
+        user = User.objects.get(id=Profile.objects.get(nickname=pk).user.id)
+        form = SettingsForm(data=request.POST, files=request.FILES, instance=user)
+        if form.is_valid():
+            new_settings = form.save(commit=False)
+            if form.cleaned_data['login']:
+                new_settings.username = form.cleaned_data['login']
+            if form.cleaned_data['email']:
+                new_settings.email = form.cleaned_data['email']
+            new_settings.save()
+            new_profile = Profile.objects.get(user=request.user)
+            if form.cleaned_data['nickname']:
+                new_profile.nickname = form.cleaned_data['nickname']
+            if form.cleaned_data['avatar']:
+                new_profile.avatar = form.cleaned_data['avatar']
+            new_profile.save()
+            return redirect(reverse('settings', kwargs={"pk": new_profile.nickname}))
+        else:
+            for err in form.errors['__all__']:
+                error.append(err)
+    else:
+        form = SettingsForm()
+    return render(request, 'settings.html', {
+        'login': pk,
+        'form': form,
+        'error': error
+    }
+                  )
 
 
 def tag(request, pk):
@@ -69,10 +175,23 @@ def one_question(request, pk):
         raise Http404
     answer = paginate(Answer.objects.get_answer(pk), request)
     answers_count = Answer.objects.get_count_answer(pk)
+
+    if request.method == 'POST':
+        form = AnswerForm(data=request.POST)
+        if form.is_valid():
+            new_answer = form.save(commit=False)
+            new_answer.author = request.user
+            new_answer.question = selected_question
+            new_answer.save()
+            return redirect(reverse('question', kwargs={"pk": pk}) + '#' + str(new_answer.id))
+    else:
+        form = AnswerForm()
+
     return render(request, 'question.html', {
         'q': selected_question,
-        'answers_count':  answers_count,
-        'answers': answer
+        'answers_count': answers_count,
+        'answers': answer,
+        'form': form
     }
                   )
 
@@ -86,3 +205,89 @@ def hot(request):
         'questions': hot_questions
     }
                   )
+
+
+@login_required
+@require_POST
+def vote(request):
+    data = request.POST
+    qid = data['qid']
+    action = data['action']
+    q = Question.objects.get(pk=qid)
+    inc = Like.ACTION[action]
+    grade = Like.objects.get_like_by_content(ContentType.objects.get_for_model(q), qid, request.user)
+
+    if grade:
+        if inc == grade.rating:
+            return JsonResponse({'status': 'already voted', 'rating': q.rating})
+        else:
+            q.rating = F('rating') + 2 * inc
+            grade.rating = inc
+            q.save()
+            grade.save()
+            q.refresh_from_db()
+            return JsonResponse({'status': 'changed', 'rating': q.rating})
+    like = Like.objects.create(user=request.user,
+                               content_type=ContentType.objects.get_for_model(q),
+                               rating=inc, object_id=qid)
+    like.save()
+    q.rating = F('rating') + inc
+    q.save()
+    q.refresh_from_db()
+
+    return JsonResponse({'status': 'ok', 'rating': q.rating})
+
+
+@login_required
+@require_POST
+def vote_answer(request):
+    data = request.POST
+    aid = data['aid']
+    action = data['action']
+    a = Answer.objects.get(pk=aid)
+    inc = Like.ACTION[action]
+    grade = Like.objects.get_like_by_content(ContentType.objects.get_for_model(a), aid, request.user)
+
+    if grade:
+        if inc == grade.rating:
+            return JsonResponse({'status': 'already voted', 'rating': a.rating})
+        else:
+            a.rating = F('rating') + 2 * inc
+            grade.rating = inc
+            a.save()
+            grade.save()
+            a.refresh_from_db()
+            return JsonResponse({'status': 'changed', 'rating': a.rating})
+    like = Like.objects.create(user=request.user,
+                               content_type=ContentType.objects.get_for_model(a),
+                               rating=inc, object_id=aid)
+    like.save()
+    a.rating = F('rating') + inc
+    a.save()
+    a.refresh_from_db()
+
+    return JsonResponse({'status': 'ok', 'rating': a.rating})
+
+
+@login_required
+@require_POST
+def vote_correct(request):
+    data = request.POST
+    aid = data['aid']
+    qid = data['qid']
+    incorrect = ''
+    for e in Answer.objects.get_answer(qid):
+        if e.correct and e.id != aid:
+            e.correct = False
+            e.save()
+            incorrect = e.id
+            break
+    a = Answer.objects.get(pk=aid)
+    if a.correct:
+        a.correct = False
+    else:
+        a.correct = True
+    a.save()
+    a.refresh_from_db()
+
+    return JsonResponse({'status': 'ok', 'correct': a.correct, 'incorrect': incorrect})

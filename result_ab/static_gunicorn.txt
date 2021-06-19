@@ -1,0 +1,42 @@
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+
+
+Server Software:        gunicorn
+Server Hostname:        localhost
+Server Port:            8081
+
+Document Path:          /uploads/ava.jpg
+Document Length:        88176 bytes
+
+Concurrency Level:      100
+Time taken for tests:   10.947 seconds
+Complete requests:      10000
+Failed requests:        0
+Total transferred:      884990000 bytes
+HTML transferred:       881760000 bytes
+Requests per second:    913.51 [#/sec] (mean)
+Time per request:       109.468 [ms] (mean)
+Time per request:       1.095 [ms] (mean, across all concurrent requests)
+Transfer rate:          78950.09 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.3      0       5
+Processing:     3  109  10.6    106     145
+Waiting:        2  108  10.6    105     145
+Total:          7  109  10.5    106     145
+
+Percentage of the requests served within a certain time (ms)
+  50%    106
+  66%    109
+  75%    113
+  80%    115
+  90%    121
+  95%    130
+  98%    136
+  99%    140
+ 100%    145 (longest request)
