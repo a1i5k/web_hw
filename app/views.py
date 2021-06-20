@@ -188,7 +188,7 @@ def one_question(request, pk):
             new_answer.author = request.user
             new_answer.question = selected_question
             new_answer.save()
-            return redirect(reverse('question', kwargs={"pk": pk}) + '#' + str(new_answer.id))
+            return redirect(reverse('question', kwargs={"pk": pk}) + '#answer' + str(new_answer.id))
     else:
         form = AnswerForm()
 
