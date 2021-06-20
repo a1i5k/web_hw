@@ -10,7 +10,11 @@
 
     <form class="input-form" action="/signup/" method="post">
             {% csrf_token %}
-            {% bootstrap_form form %}
+            {{ form.login }}<br>
+            {{ form.email }}<br>
+            {{ form.nickname }}<br>
+            {{ form.password }}<br>
+            {{ form.repeat_password }}<br>
 
             {% buttons %}
         <button class="btn btn-success">Register</button>

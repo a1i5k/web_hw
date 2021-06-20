@@ -9,7 +9,10 @@
     {% endfor %}
     <form novalidate class="input-form" action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            {% bootstrap_form form %}
+            {{ form.login }}<br>
+            {{ form.email }}<br>
+            {{ form.nickname }}<br>
+            {{ form.avatar }}<br>
             {% buttons %}
         <button class="btn btn-success">Save</button>
             {% endbuttons %}

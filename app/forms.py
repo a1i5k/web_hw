@@ -1,6 +1,5 @@
 from django import forms
-from django.core.exceptions import ValidationError
-from django.forms import Textarea
+from django.forms import Textarea, TextInput, FileInput
 
 from app.models import *
 
@@ -11,11 +10,30 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form, forms.ModelForm):
-    login = forms.CharField()
-    email = forms.EmailField()
-    nickname = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
-    repeat_password = forms.CharField(widget=forms.PasswordInput())
+    login = forms.CharField(widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'login'
+            }))
+    email = forms.EmailField(widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Email'
+            }))
+    nickname = forms.CharField(widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'nickname'
+            }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'password'
+                }))
+    repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'repeat password'
+                }))
+
+    class Meta:
+        model = User
+        fields = ['login', 'email', 'nickname', 'password', 'repeat_password']
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -37,7 +55,7 @@ class RegisterForm(forms.Form, forms.ModelForm):
         nickname = self.cleaned_data['nickname']
         check = Profile.objects.filter(nickname=nickname).exists()
         if check:
-            self.add_error(None, 'Email already exists')
+            self.add_error(None, 'Nickname already exists')
         else:
             return nickname
 
@@ -48,16 +66,23 @@ class RegisterForm(forms.Form, forms.ModelForm):
             self.add_error(None, 'Passwords does not math')
         return self.cleaned_data
 
-    class Meta:
-        model = User
-        fields = ['login', 'email', 'nickname', 'password', 'repeat_password']
-
 
 class SettingsForm(forms.Form, forms.ModelForm):
-    login = forms.CharField(required=False)
-    email = forms.EmailField(required=False)
-    nickname = forms.CharField(required=False)
-    avatar = forms.ImageField(required=False)
+    login = forms.CharField(required=False, widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'login'
+            }))
+    email = forms.EmailField(required=False, widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Email'
+            }))
+    nickname = forms.CharField(required=False, widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'nickname'
+            }))
+    avatar = forms.ImageField(required=False, widget=FileInput(attrs={
+                'class': 'form-control'
+            }))
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -100,9 +125,26 @@ class SettingsForm(forms.Form, forms.ModelForm):
 
 
 class QuestionForm(forms.ModelForm):
+    title = forms.CharField(widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Title'
+            }))
+    text = forms.Textarea()
+    tag = forms.CharField(required=False, widget=TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Tags'
+            }))
+
     class Meta:
         model = Question
         fields = ['title', 'text', 'tag']
+
+        widgets = {
+            "text": Textarea(attrs={
+                "class": "form-control",
+                'placeholder': 'Very big text'
+            })
+        }
 
 
 class AnswerForm(forms.ModelForm):
@@ -114,6 +156,5 @@ class AnswerForm(forms.ModelForm):
             "body": Textarea(attrs={
                 "class": "form-control input-text",
                 "rows": "5"
-            }
-            )
+            })
         }

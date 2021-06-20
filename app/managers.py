@@ -28,6 +28,12 @@ class TagManager(models.Manager):
             return None
         return tag
 
+    def get_tag(self, tag_str):
+        tag = self.filter(text=tag_str).first()
+        if not tag:
+            return None
+        return tag
+
     def get_top_9(self):
         return self.annotate(tags=Count('questions')).order_by('tags').reverse()[0:9]
 

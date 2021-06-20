@@ -53,7 +53,24 @@ def ask(request):
             question.author = request.user
             question.save()
             tags = form.clean()['tag']
-            question.tag.set(tags)
+
+            tags = tags.replace(' ', '')
+            parsed_tag = []
+            while tags.find(',') != -1:
+                tag = tags[:tags.find(',')]
+                parsed_tag.append(tag)
+                tags = tags[tags.find(',') + 1:]
+
+            if tags:
+                parsed_tag.append(tags)
+
+            new_tags = []
+            for tag in parsed_tag:
+                check_tag = Tag.objects.get_tag(tag)
+                if check_tag is None:
+                    check_tag = Tag.objects.create(text=tag)
+                new_tags.append(check_tag.id)
+            question.tag.set(new_tags)
             return redirect(reverse('question', kwargs={"pk": question.pk}))
     else:
         form = QuestionForm()

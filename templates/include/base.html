@@ -21,7 +21,7 @@
             {% if request.user.is_authenticated %}
                 <img src="{{ request.user.profile.avatar.url }}">
                 <span id="logged-in">
-                    <span class="username">{{ user.profile.nickname }}</span><br/>
+                    <span class="navbar_username">{{ user.profile.nickname }}</span><br/>
                     <a href="{% url 'settings' pk=user.profile.nickname %}" class="topnav-buttons-login">Settings</a>
                     <a href="{% url 'logout' %}?next={{ request.path }}" class="topnav-buttons-login">Log out</a>
                 </span>
