@@ -1,25 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
-from django.forms.utils import ErrorList
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from .models import *
 from app.forms import *
-
-
-class DivErrorList(ErrorList):
-    def __str__(self):
-        return self.as_divs()
-
-    def as_divs(self):
-        if not self:
-            return ''
-        return '%s' % ''.join(['<div class="error">%s</div>' % e for e in self])
 
 
 def paginate(objects, request, per_page=5):
@@ -35,11 +23,11 @@ def paginate(objects, request, per_page=5):
 
 
 def index(request):
-    question = paginate(Question.objects.get_new(), request)
-    if question is None:
+    questions = paginate(Question.objects.get_new(), request)
+    if questions is None:
         raise Http404
     return render(request, 'index.html', {
-        'questions': question
+        'questions': questions
     }
                   )
 
@@ -49,29 +37,29 @@ def ask(request):
     if request.method == 'POST':
         form = QuestionForm(data=request.POST)
         if form.is_valid():
-            question = form.save(commit=False)
-            question.author = request.user
-            question.save()
+            new_question = form.save(commit=False)
+            new_question.author = request.user
+            new_question.save()
             tags = form.clean()['tag']
 
             tags = tags.replace(' ', '')
             parsed_tag = []
             while tags.find(',') != -1:
-                tag = tags[:tags.find(',')]
-                parsed_tag.append(tag)
+                one_tag = tags[:tags.find(',')]
+                parsed_tag.append(one_tag)
                 tags = tags[tags.find(',') + 1:]
 
             if tags:
                 parsed_tag.append(tags)
 
             new_tags = []
-            for tag in parsed_tag:
-                check_tag = Tag.objects.get_tag(tag)
+            for one_tag in parsed_tag:
+                check_tag = Tag.objects.get_tag(one_tag)
                 if check_tag is None:
-                    check_tag = Tag.objects.create(text=tag)
+                    check_tag = Tag.objects.create(text=one_tag)
                 new_tags.append(check_tag.id)
-            question.tag.set(new_tags)
-            return redirect(reverse('question', kwargs={"pk": question.pk}))
+            new_question.tag.set(new_tags)
+            return redirect(reverse('question', kwargs={"pk": new_question.pk}))
     else:
         form = QuestionForm()
     return render(request, 'ask.html', {"form": form})
@@ -111,7 +99,7 @@ def question(request):
 def register(request):
     error = []
     if request.method == 'POST':
-        form = RegisterForm(data=request.POST, auto_id=False, error_class=DivErrorList)
+        form = RegisterForm(data=request.POST, auto_id=False)
         if form.is_valid():
             new_user = form.save(commit=False)
             new_user.username = form.cleaned_data['login']

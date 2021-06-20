@@ -13,23 +13,28 @@ class RegisterForm(forms.Form, forms.ModelForm):
     login = forms.CharField(widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'login'
-            }))
+            }),
+        label='Login')
     email = forms.EmailField(widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Email'
-            }))
+            }),
+        label='Email')
     nickname = forms.CharField(widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'nickname'
-            }))
+            }),
+        label='Nickname')
     password = forms.CharField(widget=forms.PasswordInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'password'
-                }))
+                }),
+        label='Password')
     repeat_password = forms.CharField(widget=forms.PasswordInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'repeat password'
-                }))
+                }),
+        label='Repeat_password')
 
     class Meta:
         model = User
@@ -71,18 +76,22 @@ class SettingsForm(forms.Form, forms.ModelForm):
     login = forms.CharField(required=False, widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'login'
-            }))
+            }),
+        label='Login')
     email = forms.EmailField(required=False, widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Email'
-            }))
+            }),
+        label='Email')
     nickname = forms.CharField(required=False, widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'nickname'
-            }))
+            }),
+        label='Nickname')
     avatar = forms.ImageField(required=False, widget=FileInput(attrs={
                 'class': 'form-control'
-            }))
+            }),
+        label='Avatar')
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -128,9 +137,10 @@ class QuestionForm(forms.ModelForm):
     title = forms.CharField(widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Title'
-            }))
+            }),
+        label='Title')
     text = forms.Textarea()
-    tag = forms.CharField(required=False, widget=TextInput(attrs={
+    tag = forms.CharField(label='Tags', required=False, widget=TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Tags'
             }))
@@ -144,6 +154,9 @@ class QuestionForm(forms.ModelForm):
                 "class": "form-control",
                 'placeholder': 'Very big text'
             })
+        }
+        labels = {
+            'text': 'Text'
         }
 
 

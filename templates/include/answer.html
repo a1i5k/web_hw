@@ -13,7 +13,7 @@
         <div class="question-preview-content answer">
             <p class="card-text">{{ answer.body }}</p>
             <div class="bottom-content">
-                {% if request.user == answer.author %}
+                {% if request.user == q.author %}
                 <input type="checkbox" id="correct{{ answer.pk }}" data-aid="{{ answer.pk }}" data-qid="{{ q.pk }}" class="js-current form-check-input" {% if answer.correct %} checked {% endif %}>
                 <label class="form-check-label">
                     Correct!

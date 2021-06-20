@@ -5,8 +5,11 @@
 <div class="content">
     <form novalidate class="input-form" action="/ask/" method="post">
         {% csrf_token %}
+        {{ form.title.label }}
         {{ form.title }}<br>
+        {{ form.text.label }}
         {{ form.text }}<br>
+        {{ form.tag.label }}
         {{ form.tag }}
         {% buttons %}
         <button class="btn btn-success" type="submit">ASK!</button>

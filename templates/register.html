@@ -10,10 +10,15 @@
 
     <form class="input-form" action="/signup/" method="post">
             {% csrf_token %}
+            {{ form.login.label }}
             {{ form.login }}<br>
+            {{ form.email.label }}
             {{ form.email }}<br>
+            {{ form.nickname.label }}
             {{ form.nickname }}<br>
+            {{ form.password.label }}
             {{ form.password }}<br>
+            {{ form.repeat_password.label }}
             {{ form.repeat_password }}<br>
 
             {% buttons %}
