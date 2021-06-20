@@ -27,7 +27,7 @@
                 </span>
             {% else %}
             <span id="guest">
-                <a id="login" class="topnav-buttons" href="{% url 'login' %}">Login</a>
+                <a id="login" class="topnav-buttons" href="{% url 'login' %}?next={{ request.path }}">Login</a>
                 <a id="signup" class="topnav-buttons" href="{% url 'signup' %}">Sign up</a>
             </span>
             {% endif %}
