@@ -15,7 +15,7 @@
         <a class="title" href="{% url 'new' %}">GitOverFlow</a>
         <span class="searchbar">
       <input type="text" placeholder="Search...">
-      <button type="button" class="btn btn-success search">ASK!</button>
+      <a href="{% url 'ask' %}" class="btn btn-success search">ASK!</a>
     </span>
         <div class="login">
             {% if request.user.is_authenticated %}
